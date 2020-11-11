@@ -10,6 +10,7 @@ access_token_secret = secrets.access_token_secret
 
 class TwitterClient:
     def __init__(self):
+        tweepy.debug(True)
         twitter_authenticator = TwitterAuthenticator()
         self.auth = twitter_authenticator.get_auth()
         self.twitter_client = tweepy.API(self.auth, wait_on_rate_limit=True)
@@ -22,14 +23,25 @@ class TwitterClient:
     def get_following(self, name=''):
         client = self.twitter_client
         following_results = tweepy.Cursor(client.friends, screen_name=name, count=200).pages()
-
-        i = 0
         # Each page returns a list of what you requested (in this case: users).
 
         for list_of_users in following_results:
             for user in list_of_users:
-                print(f'{i}) {user.name}')
-                i += 1
+                pass
+
+    def get_tweets(self, name=''):
+        client = self.twitter_client
+        client.user_timeline()
+        pass
+
+    def get_favorites(self, name=''):
+        client = self.twitter_client
+        client.favorites()
+        pass
+
+    # get a list of what a user retweeted.
+    def get_retweets(self, name=''):
+        pass
 
     '''Brainstorming'''
     # handling the rate limit, we can sleep(60*15)
